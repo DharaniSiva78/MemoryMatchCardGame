@@ -3,13 +3,14 @@ import "./App.css";
 import "./index.css";
 import SingleCard from "./components/SingleCard";
 
+// Use PUBLIC_URL to reference public folder assets (important for GitHub Pages)
 const cardImages = [
-  { src: "/img/jaddu.png", matched: false },
-  { src: "/img/dhoni.png", matched: false },
-  { src: "/img/ruthuraj.png", matched: false },
-  { src: "/img/pathirana.png", matched: false },
-  { src: "/img/rachin.png", matched: false },
-  { src: "/img/aswin.png", matched: false },
+  { src: `${process.env.PUBLIC_URL}/img/jaddu.png`, matched: false },
+  { src: `${process.env.PUBLIC_URL}/img/dhoni.png`, matched: false },
+  { src: `${process.env.PUBLIC_URL}/img/ruthuraj.png`, matched: false },
+  { src: `${process.env.PUBLIC_URL}/img/pathirana.png`, matched: false },
+  { src: `${process.env.PUBLIC_URL}/img/rachin.png`, matched: false },
+  { src: `${process.env.PUBLIC_URL}/img/aswin.png`, matched: false },
 ];
 
 function App() {
@@ -32,18 +33,20 @@ function App() {
   };
 
   const handleChoice = (card) => {
-    choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
+    if (!disabled) {
+      choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
+    }
   };
 
   useEffect(() => {
     if (choiceOne && choiceTwo) {
       setDisabled(true);
       if (choiceOne.src === choiceTwo.src) {
-        setCards((prevCards) => {
-          return prevCards.map((card) =>
+        setCards((prevCards) =>
+          prevCards.map((card) =>
             card.src === choiceOne.src ? { ...card, matched: true } : card
-          );
-        });
+          )
+        );
         resetTurn();
       } else {
         setTimeout(() => resetTurn(), 1000);
@@ -54,12 +57,12 @@ function App() {
   const resetTurn = () => {
     setChoiceOne(null);
     setChoiceTwo(null);
-    setTurns((prevTurns) => prevTurns + 1);
+    setTurns((prev) => prev + 1);
     setDisabled(false);
   };
 
   useEffect(() => {
-    const allMatched = cards.every((card) => card.matched);
+    const allMatched = cards.length > 0 && cards.every((card) => card.matched);
     if (allMatched) {
       setGameOver(true);
     }
@@ -74,7 +77,7 @@ function App() {
       <h1>Memory Match</h1>
       {gameOver && (
         <div>
-          <h2>Game Over!</h2>
+          <h2>🎉 Game Over!</h2>
           <button onClick={shuffleCards}>New Game</button>
         </div>
       )}
