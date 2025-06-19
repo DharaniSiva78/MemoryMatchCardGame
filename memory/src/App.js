@@ -3,6 +3,7 @@ import "./App.css";
 import "./index.css";
 import SingleCard from "./components/SingleCard";
 
+// Use PUBLIC_URL to reference public folder assets (important for GitHub Pages)
 const cardImages = [
   { src: `${process.env.PUBLIC_URL}/img/jaddu.png`, matched: false },
   { src: `${process.env.PUBLIC_URL}/img/dhoni.png`, matched: false },
@@ -74,7 +75,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Memory Match</h1>
+      <h1>Memory Match Card Game</h1>
       {gameOver && (
         <div>
           <h2>🎉 Game Over!</h2>
